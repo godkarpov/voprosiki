@@ -49,7 +49,7 @@
   .filters {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
     margin-bottom: 2rem;
   }
 
@@ -58,6 +58,21 @@
     flex-wrap: wrap;
     gap: 6px;
     align-items: center;
+    padding: 14px 16px;
+    border-radius: 18px;
+  }
+
+  /* Тематики — светлый фон */
+  .filter-row-topic {
+    background: #E7E3D9;
+    border: 1px solid rgba(26,26,26,0.08);
+  }
+
+  /* Механики — отдельный фон + жёлтый акцент сверху */
+  .filter-row-mechanic {
+    background: #FBF6E9;
+    border: 1px solid rgba(245,200,66,0.55);
+    box-shadow: inset 0 2px 0 rgba(245,200,66,0.45);
   }
 
   .filter-label {
@@ -85,8 +100,16 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .chip:hover { background: #e3e0d8; }
+  .chip:hover { background: #d8d4ca; }
   .chip.active { background: #1a1a1a; color: #F0EDE6; }
+
+  /* Активный чип механики — пастельно-жёлтый с чёрным текстом */
+  .chip[data-type='mechanic'].active {
+    background: #F5C842;
+    color: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+  .chip[data-type='mechanic'].active:hover { background: #F5C842; }
 
   /* Divider */
   .divider {
@@ -205,6 +228,46 @@
     letter-spacing: 0.01em;
   }
 
+  /* Pixel man */
+  .pixel-man {
+    display: block;
+    width: 56px;
+    height: 60px;
+    margin: 20px auto 0;
+  }
+  .pixel-man svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .pm-figure, .pm-hat, .pm-arm-r {
+    transition: transform 300ms ease;
+    transform-box: fill-box;
+  }
+  .pm-figure { transform-origin: 50% 100%; }
+  .pm-hat   { transform-origin: 50% 100%; }
+  .pm-arm-r { transform-origin: 0% 0%; }
+
+  /* туловище и рукава — общий цвет (меняется при «Остреньких») */
+  .pm-body { fill: #4A6FA5; transition: fill 300ms ease; }
+  .pm-cheek { opacity: 0; transition: opacity 300ms ease; }
+
+  /* Поклон: фигура наклоняется, шляпа приподнимается */
+  .pixel-man.bow .pm-figure { transform: rotate(16deg); }
+  .pixel-man.bow .pm-hat    { transform: translate(-3px, -5px) rotate(-32deg); }
+
+  /* Чешет голову: правая рука поднимается к голове и подрагивает */
+  .pixel-man.scratch .pm-arm-r { animation: pm-scratch 0.55s ease-in-out infinite; }
+  @keyframes pm-scratch {
+    0%, 100% { transform: rotate(148deg); }
+    50%      { transform: rotate(158deg); }
+  }
+
+  /* Краснеет на теме «Остренькие» */
+  .pixel-man.spicy .pm-body  { fill: #D64545; }
+  .pixel-man.spicy .pm-cheek { opacity: 1; }
+
   /* Mobile */
   @media (max-width: 480px) {
     .app { padding: 1.25rem 1rem 2.5rem; }
@@ -212,6 +275,7 @@
     .card { padding: 1.25rem; min-height: 220px; }
     .card-question { font-size: 18px; }
     .filter-label { width: 56px; font-size: 9px; }
+    .filter-row { padding: 10px 12px; }
     .hint { display: none; }
   }
 </style>
@@ -225,21 +289,21 @@
   </div>
 
   <div class="filters">
-    <div class="filter-row">
+    <div class="filter-row filter-row-topic">
       <span class="filter-label">Тема</span>
       <div class="chip active" data-type="topic" data-val="all">Все</div>
-      <div class="chip" data-type="topic" data-val="Самопознание и психика">Самопознание</div>
-      <div class="chip" data-type="topic" data-val="Отношения и близость">Отношения</div>
-      <div class="chip" data-type="topic" data-val="Работа, бизнес и деньги">Работа</div>
-      <div class="chip" data-type="topic" data-val="Общество, мораль и философия">Общество</div>
-      <div class="chip" data-type="topic" data-val="Творчество, искусство и медиа">Творчество</div>
-      <div class="chip" data-type="topic" data-val="Родители, дети и воспитание">Дети</div>
-      <div class="chip" data-type="topic" data-val="Остренькие / провокационные">Остренькие 🌶</div>
-      <div class="chip" data-type="topic" data-val="Разогрев и быстрые">Разогрев</div>
-      <div class="chip" data-type="topic" data-val="Тело, здоровье и состояние">Тело</div>
-      <div class="chip" data-type="topic" data-val="Страны, среда и культурный контекст">Страны</div>
+      <div class="chip" data-type="topic" data-val="Самопознание и психика">🧠 Самопознание</div>
+      <div class="chip" data-type="topic" data-val="Отношения и близость">💛 Отношения</div>
+      <div class="chip" data-type="topic" data-val="Работа, бизнес и деньги">💼 Работа</div>
+      <div class="chip" data-type="topic" data-val="Общество, мораль и философия">🌍 Общество</div>
+      <div class="chip" data-type="topic" data-val="Творчество, искусство и медиа">🎨 Творчество</div>
+      <div class="chip" data-type="topic" data-val="Родители, дети и воспитание">👶 Дети</div>
+      <div class="chip" data-type="topic" data-val="Остренькие / провокационные">🌶 Остренькие</div>
+      <div class="chip" data-type="topic" data-val="Разогрев и быстрые">⚡️ Разогрев</div>
+      <div class="chip" data-type="topic" data-val="Тело, здоровье и состояние">🫀 Тело</div>
+      <div class="chip" data-type="topic" data-val="Страны, среда и культурный контекст">✈️ Страны</div>
     </div>
-    <div class="filter-row">
+    <div class="filter-row filter-row-mechanic">
       <span class="filter-label">Механика</span>
       <div class="chip active" data-type="mechanic" data-val="all">Все</div>
       <div class="chip" data-type="mechanic" data-val="Или-или">Или-или</div>
@@ -272,6 +336,44 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- 8-битный человечек: пиксель-арт через inline SVG -->
+  <div class="pixel-man" id="pixel-man" aria-hidden="true" title="">
+    <svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+      <g class="pm-figure">
+        <!-- руки -->
+        <g class="pm-arm-l">
+          <rect x="3" y="7" width="2" height="4" class="pm-body"/>
+          <rect x="3" y="11" width="2" height="1" fill="#F2C49B"/>
+        </g>
+        <g class="pm-arm-r">
+          <rect x="11" y="7" width="2" height="4" class="pm-body"/>
+          <rect x="11" y="11" width="2" height="1" fill="#F2C49B"/>
+        </g>
+        <!-- туловище -->
+        <rect x="5" y="7" width="6" height="5" class="pm-body"/>
+        <!-- голова -->
+        <rect x="5" y="3" width="6" height="4" fill="#F2C49B"/>
+        <!-- глаза -->
+        <rect x="6" y="4" width="1" height="1" fill="#1a1a1a"/>
+        <rect x="9" y="4" width="1" height="1" fill="#1a1a1a"/>
+        <!-- румянец (для «Остреньких») -->
+        <rect x="6" y="5" width="1" height="1" class="pm-cheek" fill="#E05050"/>
+        <rect x="9" y="5" width="1" height="1" class="pm-cheek" fill="#E05050"/>
+        <!-- ноги -->
+        <rect x="5" y="12" width="2" height="3" fill="#33414f"/>
+        <rect x="9" y="12" width="2" height="3" fill="#33414f"/>
+        <!-- ботинки -->
+        <rect x="4" y="15" width="3" height="1" fill="#1a1a1a"/>
+        <rect x="9" y="15" width="3" height="1" fill="#1a1a1a"/>
+        <!-- шляпа (внутри фигуры: кланяется вместе, снимается отдельно) -->
+        <g class="pm-hat">
+          <rect x="5" y="0" width="6" height="2" fill="#2A2A2A"/>
+          <rect x="4" y="2" width="8" height="1" fill="#2A2A2A"/>
+        </g>
+      </g>
+    </svg>
   </div>
 
   <p class="hint">нажмите на карточку или используйте ← →</p>
@@ -2547,16 +2649,48 @@ function render() {
   document.getElementById("card-question").textContent = card.q;
 }
 
+// --- Пиксельный человечек ---
+const pixelMan = document.getElementById("pixel-man");
+let bowTimer = null;
+let idleTimer = null;
+
+function triggerBow() {
+  if (!pixelMan) return;
+  pixelMan.classList.remove("scratch");
+  pixelMan.classList.add("bow");
+  clearTimeout(bowTimer);
+  bowTimer = setTimeout(() => pixelMan.classList.remove("bow"), 320);
+}
+
+function resetIdle() {
+  if (!pixelMan) return;
+  pixelMan.classList.remove("scratch");
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => pixelMan.classList.add("scratch"), 10000);
+}
+
+function updateSpicy() {
+  if (!pixelMan) return;
+  pixelMan.classList.toggle("spicy", activeTopic === "Остренькие / провокационные");
+}
+
+function onQuestionChange() {
+  triggerBow();
+  resetIdle();
+}
+
 function nextCard() {
   if (!filtered.length) return;
   idx = (idx + 1) % filtered.length;
   render();
+  onQuestionChange();
 }
 
 function prevCard() {
   if (!filtered.length) return;
   idx = (idx - 1 + filtered.length) % filtered.length;
   render();
+  onQuestionChange();
 }
 
 document.addEventListener("keydown", e => {
@@ -2591,11 +2725,15 @@ document.querySelectorAll(".chip").forEach(chip => {
     filtered = shuffle(getFiltered());
     idx = 0;
     render();
+    updateSpicy();
+    onQuestionChange();
   });
 });
 
 filtered = shuffle(getFiltered());
 render();
+updateSpicy();
+resetIdle();
 </script>
 </body>
 </html>
